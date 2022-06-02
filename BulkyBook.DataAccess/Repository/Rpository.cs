@@ -18,18 +18,34 @@ namespace BulkyBook.DataAccess.Repository
         public Rpository(AppDbContext db)
         {
             _db = db;
+            //_db.Products.Include(u => u.Category).Include(u=>u.CoverType);
             this.dbSet = _db.Set<T>();
         }
 
-        public T GetFirstOrDefault(Expression<Func<T, bool>> filter)
+        public T GetFirstOrDefault(Expression<Func<T, bool>> filter, string? includeProp = null)
         {
             IQueryable<T> query = dbSet;
-            return query.FirstOrDefault(filter);
+            query = query.Where(filter);
+            if (includeProp != null)
+            {
+                foreach (var prop in includeProp.Split(',', StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(prop);
+                }
+            }
+            return query.FirstOrDefault();
         }
 
-        public IEnumerable<T> GetAll()
+        public IEnumerable<T> GetAll(string? includeProp = null)
         {
             IQueryable<T> query = dbSet;
+            if (includeProp != null)
+            {
+                foreach (var prop in includeProp.Split(',',StringSplitOptions.RemoveEmptyEntries))
+                {
+                    query = query.Include(prop);
+                }
+            }
             return query.ToList();
         }
 

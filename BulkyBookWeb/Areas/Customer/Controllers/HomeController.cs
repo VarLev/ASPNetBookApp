@@ -25,8 +25,13 @@ namespace BulkyBookWeb.Controllers
         }
         public IActionResult Details(int id)
         {
-            Product product = _unitOfWork.ProductRepository.GetFirstOrDefault(p=>p.Id==id, includeProp: "Category,CoverType");
-            return View(product);
+            ShoppingCart cardObj = new()
+            {
+                Count = 1,
+                Product = _unitOfWork.ProductRepository.GetFirstOrDefault(p => p.Id == id,includeProp: "Category,CoverType")
+            };
+            
+            return View(cardObj);
         }
 
         public IActionResult Privacy()

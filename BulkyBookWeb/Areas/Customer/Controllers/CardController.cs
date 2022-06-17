@@ -35,6 +35,23 @@ namespace BulkyBookWeb.Areas.Customer.Controllers
             }
             return View(ShoppingCartVM);
         }
+        public IActionResult Summary()
+        {
+            //var claimsIdentity = (ClaimsIdentity)User.Identity;
+            //var clim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
+            //ShoppingCartVM = new ShoppingCartVM()
+            //{
+            //    ListCarts = _unitOfWork.ShoppingCartRepository
+            //        .GetAll(u => u.ApplicationUserId == clim.Value, includeProp: "Product")
+            //};
+            //foreach (var cart in ShoppingCartVM.ListCarts)
+            //{
+            //    cart.Price = GetPriceBasedOnQuantity(cart.Count, cart.Product.Price, cart.Product.Price50,
+            //        cart.Product.Price100);
+            //    ShoppingCartVM.CartTol += (cart.Price * cart.Count);
+            //}
+            return View();
+        }
 
         public IActionResult Plus(int cartId)
         {

@@ -1,12 +1,12 @@
 ﻿var dataTable;
-$(document).ready(function() {
+$(window).ready(function () {
     loadDataTable();
 });
 
 function loadDataTable() {
     dataTable = $('#tblData').DataTable({
         "ajax": {
-            "url":"/Admin/Product/GetAll"
+            "url": "/Admin/Product/GetAll"
         },
         "columns": [
             { "data": "title", "width": "15%" },
@@ -14,14 +14,16 @@ function loadDataTable() {
             { "data": "price", "width": "15%" },
             { "data": "author", "width": "15%" },
             { "data": "category.name", "width": "15%" },
-            { "data": "id", "width": "15%", "render": function(data) {
-                return `<div class="w-75 btn-group" role="group">
+            {
+                "data": "id", "width": "15%", "render": function (data) {
+                    return `<div class="w-75 btn-group" role="group">
 						<a href="/Admin/Product/Upsert?id=${data}" class="btn btn-primary mx-2">
 							<i class="bi bi-pencil"></i> Edit</a>
 						<a onClick=Delete('/Admin/Product/Delete/${data}')  class="btn btn-danger mx-2">
 							<i class="bi bi-trash"></i> Delete</a>
 					</div>`;
-            } }
+                }
+            }
         ]
     });
 }
@@ -40,7 +42,7 @@ function Delete(url) {
             $.ajax({
                 url: url,
                 type: 'DELETE',
-                success: function(data) {
+                success: function (data) {
                     if (data.success) {
                         dataTable.ajax.reload();
                         toastr.success(data.message);

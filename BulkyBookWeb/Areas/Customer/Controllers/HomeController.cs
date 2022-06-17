@@ -45,7 +45,19 @@ namespace BulkyBookWeb.Controllers
             var clim = claimsIdentity.FindFirst(ClaimTypes.NameIdentifier);
             shoppingCart.ApplicationUserId = clim.Value;
 
-            _unitOfWork.ShoppingCartRepository.Add(shoppingCart);
+            ShoppingCart cartFromDb = _unitOfWork.ShoppingCartRepository
+                .GetFirstOrDefault(u => u.ApplicationUserId == clim.Value && u.ProductId == shoppingCart.ProductId);
+
+            if (cartFromDb == null)
+            {
+                _unitOfWork.ShoppingCartRepository.Add(shoppingCart);
+            }
+            else
+            {
+                _unitOfWork.ShoppingCartRepository.IncrementCount(cartFromDb, shoppingCart.Count);
+            }
+
+            
             _unitOfWork.Save();
 
             return RedirectToAction(nameof(Index));
